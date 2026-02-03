@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Alina ❤️</title>
+    <style>
+        body {
+            background-color: #ffe6e6; /* Soft pink background */
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+        }
+        h1 { color: #ff4d4d; margin-bottom: 15px;}
+        p { color: #555; font-size: 18px; line-height: 1.5; margin-bottom: 20px;}
+        
+        input {
+            width: 80%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 2px solid #ffcccc;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s;
+        }
+        input:focus { border-color: #ff4d4d; }
+        
+        button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+        button:hover { transform: scale(1.05); background-color: #ff3333; }
+        
+        .hidden { display: none; }
+        .error { color: #e60000; font-size: 14px; margin-top: 10px; display: none; font-weight: bold;}
+        .note { color: #888; font-size: 12px; margin-top: 5px; }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: absolute;
+            color: #ff4d4d;
+            font-size: 20px;
+            animation: float 4s linear infinite;
+            opacity: 0;
+            z-index: 1;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="screen-1" class="card">
+        <h1>Hi Beautiful! ❤️</h1>
+        <p>I made a little code just for you.</p>
+        <p>But before I can reveal the secret message, you have to pass a test...</p>
+        <button onclick="nextScreen(2)">Start the Quiz</button>
+    </div>
+
+    <div id="screen-2" class="card hidden">
+        <h1>Question 1</h1>
+        <p>First up: When is my birthday?</p>
+        <input type="text" id="ans-birthday" placeholder="e.g. January 1st">
+        <p class="error" id="err-2">Wrong date! Try again 😉</p>
+        <button onclick="checkBirthday()">Next</button>
+    </div>
+
+    <div id="screen-3" class="card hidden">
+        <h1>Question 2</h1>
+        <p>Second: What is our favorite food?</p>
+        <input type="text" id="ans-food" placeholder="Type here...">
+        <p class="error" id="err-3">Not quite! 🍔🍟</p>
+        <button onclick="checkFood()">Next</button>
+    </div>
+
+    <div id="screen-4" class="card hidden">
+        <h1>Question 3</h1>
+        <p>Third: What did we do for our very first date?</p>
+        <input type="text" id="ans-date" placeholder="Type here...">
+        <p class="error" id="err-4">Nope! Did you forget? ⛳</p>
+        <button onclick="checkDate()">Next</button>
+    </div>
+
+    <div id="screen-5" class="card hidden">
+        <h1>Serious Question...</h1>
+        <p>📅 When do you want me to officially ask you to be my girlfriend?</p>
+        <input type="text" id="ans-official" placeholder="Day / Time / Location">
+        <button onclick="saveAndNext()">Lock it in 🔒</button>
+    </div>
+
+    <div id="screen-6" class="card hidden">
+        <h1>Got it!</h1>
+        <p id="official-response-text"></p>
+        <p>I've got that noted down on my calendar. 😉</p>
+        <button onclick="nextScreen(7)">Continue ✨</button>
+    </div>
+
+    <div id="screen-7" class="card hidden">
+        <h1>✨ You passed! ✨</h1>
+        <p>Here is your final question...</p>
+        <br>
+        <p style="font-size: 22px; color: #ff4d4d; font-weight: bold;">Alina, will you be my Valentine?</p>
+        <button onclick="celebrate()">YES!</button>
+        <button onclick="celebrate()">YES!</button>
+    </div>
+
+    <div id="screen-8" class="card hidden">
+        <h1>❤️ YAY! ❤️</h1>
+        <p>SEE YOU SOON!</p>
+        <p>(I'm not taking no for an answer!)</p>
+    </div>
+
+    <script>
+        // ============================================
+        // 🛠️ LOGIC BASED ON YOUR PYTHON SCRIPT 🛠️
+        // ============================================
+        
+        function nextScreen(id) {
+            document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+            document.getElementById('screen-' + id).classList.remove('hidden');
+        }
+
+        // Question 1: Birthday (January 2nd)
+        function checkBirthday() {
+            let ans = document.getElementById('ans-birthday').value.toLowerCase().trim();
+            // Checks for "january" AND "2" to be safe
+            if(ans.includes("january") && ans.includes("2")) {
+                nextScreen(3);
+            } else if (ans.includes("jan") && ans.includes("2")) {
+                 nextScreen(3);
+            } else {
+                document.getElementById('err-2').style.display = 'block';
+            }
+        }
+
+        // Question 2: Food (In n out)
+        function checkFood() {
+            let ans = document.getElementById('ans-food').value.toLowerCase().trim();
+            // Removes dashes to handle "in-n-out" or "in n out"
+            let cleanAns = ans.replace(/-/g, ' '); 
+            if(cleanAns.includes("in n out")) {
+                nextScreen(4);
+            } else {
+                document.getElementById('err-3').style.display = 'block';
+            }
+        }
+
+        // Question 3: First Date (Mini Golf)
+        function checkDate() {
+            let ans = document.getElementById('ans-date').value.toLowerCase().trim();
+            if(ans.includes("mini golf") || ans.includes("golf")) {
+                nextScreen(5);
+            } else {
+                document.getElementById('err-4').style.display = 'block';
+            }
+        }
+
+        // Question 4: Official Date (Any answer)
+        function saveAndNext() {
+            let dateAnswer = document.getElementById('ans-official').value;
+            if(dateAnswer.trim() === "") {
+                alert("Please type an answer! 😉");
+                return;
+            }
+            // Update the text in the next screen to match Python script logic
+            document.getElementById('official-response-text').innerText = `Hmm... "${dateAnswer}"`;
+            nextScreen(6);
+        }
+
+        function celebrate() {
+            nextScreen(8);
+            startHearts();
+        }
+
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = "❤️";
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
